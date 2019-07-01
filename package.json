@@ -12,10 +12,10 @@
   "license": "ISC",
   "devDependencies": {
     "browserify": "^16.2.3",
-    "express": "^4.16.4",
     "open": "^6.1.0"
   },
   "dependencies": {
+    "express": "^4.16.4",
     "blockstack": "^19.1.0"
   }
 }
