@@ -75,14 +75,14 @@
     </header>
     <main class="container dashboard">
       <h1 class="visuallyhidden">Create an Archive</h1>
-      <form>
+      <form id="url-form">
         <label class="visuallyhidden" for="url">URL of page to archive:</label>
-        <input autofocus="" id="url" placeholder="https://gmail.com" type="url" value="https://gmail.com">
+        <input autofocus="" id="url" placeholder="https://reddit.com" type="url" value="https://reddit.com">
       </form>
       <section>
         <h2>Live View</h2>
         <div>
-          <iframe id="browser-iframe" tabindex="-1"></iframe>
+          <iframe id="browser-iframe" tabindex="-1" sandbox="allow-same-origin allow-scripts"></iframe>
         </div>
         <button id="btnFreshLiveView">Refresh</button>
       </section>

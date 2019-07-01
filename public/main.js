@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
   const gridEl = document.querySelector('.grid');
   const tabEls = document.querySelectorAll('nav ul li a');
   const urlEl = document.getElementById('url');
+  const urlFormEl = document.getElementById('url-form');
   const sourceEl = document.getElementById('source-textarea');
   const iframeEl = document.getElementById('browser-iframe');
   const iframeDoc = iframeEl.contentWindow.document;
@@ -160,10 +161,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
     }
   });
 
-  urlEl.addEventListener('keyup', (event) => {
-    if (event.key === 'Enter') {
-      fetchPage();
-    }
+  urlFormEl.addEventListener('submit', (event) => {
+    fetchPage();
+    event.preventDefault();
   });
   
   // alert('About to do first page fetch, please be patient.');
@@ -173,3 +173,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     setTimeout(getScreenshot, 300);
   };
 });
+
+window.onbeforeunload = function(){
+  return 'onbeforeunload: Leave Darchive?';
+};
