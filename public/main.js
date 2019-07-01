@@ -114,10 +114,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
       tabEls.forEach((elem) => {
         elem.className = ' ';
       });
-      console.log(e);
       e.target.className = 'active';
       e.target.blur();
-      e.preventDefault();
+      // e.preventDefault();
     });
   });
   
