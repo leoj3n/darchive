@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function(event) {
   const urlFormEl = document.getElementById('url-form');
   const sourceEl = document.getElementById('source-textarea');
   const iframeEl = document.getElementById('browser-iframe');
-  const iframeDoc = iframeEl.contentWindow.document;
   const screenshotEl = document.getElementById('screenshot-div');
   const btnFreshSourceEl = document.getElementById('btnFreshSource');
   const btnFreshScreenshotEl = document.getElementById('btnFreshScreenshot');
@@ -34,11 +33,15 @@ document.addEventListener('DOMContentLoaded', function(event) {
     sourceEl.value = val;
   }
   
-  function setIframeHtml(html) {
-    iframeDoc.open();
-    iframeDoc.innerHTML = '';
-    iframeDoc.write(html);
-    iframeDoc.close(); // triggers iframe onload
+  function setIframeHtml(html, keepOpen) {
+    iframeEl.contentWindow.document.open();
+    iframeEl.contentWindow.document.innerHTML = '';
+    let url = new URL(urlEl.value);
+    html = html.replace('</head>', `<base href="${url.origin}"></head>`);
+    iframeEl.contentWindow.document.write(html);
+    if (!keepOpen) {
+      iframeEl.contentWindow.document.close(); // triggers iframe onload
+    }
   }
   
   function processText(fetchedHtml) {
@@ -48,8 +51,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
   }
   
   function fetchPage() {
-    setIframeHtml('');
     setSourceValue('');
+    setIframeHtml('', true);
     screenshotEl.innerHTML = '';
     
     fetch(
@@ -64,6 +67,10 @@ document.addEventListener('DOMContentLoaded', function(event) {
   }
 
   function getScreenshot() {
+    if (!verifyOrigin()) {
+      return;
+    }
+
     if (screenshotBusy === true) {
       alert('Already busy getting screenshot');
       return;
@@ -72,16 +79,34 @@ document.addEventListener('DOMContentLoaded', function(event) {
     screenshotBusy = true;
     
     html2canvas(
-      iframeEl.contentWindow.document.body,
+      iframeEl.contentWindow.document.documentElement,
       {
         scale: 2,
         allowTaint: false,
         proxy: imageProxy,
+        onclone: (document) => {
+          let images = document.getElementsByTagName('img');
+          let links = document.getElementsByTagName('link');
+
+          function absoluteUrl(url) {
+            const link = document.createElement('a');
+            link.href = url;
+            return link.origin + link.pathname + link.search + link.hash;
+          };;
+
+          Array.from(images).forEach((el) => {
+            el.src = absoluteUrl(el.getAttribute('src'));
+          });
+
+          Array.from(links).forEach(function(el){
+            el.href = absoluteUrl(el.getAttribute('href'));
+          });
+        },
       },
-    ).then(function(canvas) {
+    ).then((canvas) => {
       screenshotEl.innerHTML = '';
       screenshotEl.appendChild(canvas);
-    }).finally(function(error) {
+    }).finally((error) => {
       screenshotBusy = false;
     });
   }
@@ -110,7 +135,18 @@ document.addEventListener('DOMContentLoaded', function(event) {
     buzz.currentTime = 0.175;
     buzz.play();
   }
-  
+
+  function verifyOrigin() {
+    try {
+      iframeEl.contentWindow['try'] = true;
+      return iframeEl.contentWindow['try'];
+    } catch(e) {
+      alert('Cross-origin error: Please open links in a new tab and/or use the form input to navigate.');
+      iframeEl.src = 'about:blank';
+      return false;
+    }
+  }
+
   tabEls.forEach((el) => {
     el.addEventListener('click', (e) => {
       tabEls.forEach((elem) => {
@@ -118,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
       });
       e.target.className = 'active';
       e.target.blur();
-      // e.preventDefault();
+      e.preventDefault();
     });
   });
   
@@ -164,16 +200,17 @@ document.addEventListener('DOMContentLoaded', function(event) {
   urlFormEl.addEventListener('submit', (event) => {
     fetchPage();
     event.preventDefault();
-  });
+  }, true);
   
-  // alert('About to do first page fetch, please be patient.');
   fetchPage();
 
   iframeEl.onload = () => {
-    setTimeout(getScreenshot, 300);
+    if (verifyOrigin()) {
+      setTimeout(getScreenshot, 300);
+    }
   };
 });
 
-window.onbeforeunload = function(){
-  return 'onbeforeunload: Leave Darchive?';
+window.onbeforeunload = function() {
+  return 'confirm leave onbeforeunload';
 };
