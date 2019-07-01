@@ -1,0 +1,15 @@
+{
+  "name": "darchive",
+  "version": "1.0.0",
+  "description": "Decentralized internet archive.",
+  "main": "index.html",
+  "scripts": {
+    "start": "node index.js",
+    "develop": "http-server -c-1 -S -K ~/.localhost/localhost+2-key.pem -C ~/.localhost/localhost+2.pem"
+  },
+  "author": "leoj3n",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
