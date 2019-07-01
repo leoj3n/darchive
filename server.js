@@ -1,7 +1,9 @@
 const express = require('express')
+const enforce = require('express-sslify');
 
 const app = express()
 const port = process.env.PORT || 5000
+
 
 function allowCrossDomain (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')
@@ -10,6 +12,9 @@ function allowCrossDomain (req, res, next) {
   next()
 }
 
+if (process.env.NODE_ENV === 'production') {
+  app.use(enforce.HTTPS({ trustProtoHeader: true }));
+}
 app.use(allowCrossDomain)
 app.use('/', express.static(`${__dirname}/public`))
 
