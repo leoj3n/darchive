@@ -7,11 +7,11 @@ document.addEventListener("DOMContentLoaded", event => {
     userSession.redirectToSignIn()
   })
 
-  document.getElementById('signout-button').addEventListener('click', event => {
-    event.preventDefault()
-    userSession.signUserOut()
-    window.location = window.location.origin
-  })
+  // document.getElementById('signout-button').addEventListener('click', event => {
+  //   event.preventDefault()
+  //   userSession.signUserOut()
+  //   window.location = window.location.origin
+  // })
 
   function showProfile (profile) {
     let person = new blockstack.Person(profile)

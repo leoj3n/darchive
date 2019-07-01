@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "browserify": "browserify requires.js -o public/bundle.js",
-    "start": "npm run browserify && node server.js"
+    "develop": "npm run browserify && node server.js",
+    "start": "node server.js"
   },
   "author": "leoj3n",
   "license": "ISC",
