@@ -45,6 +45,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
     iframeEl.contentWindow.document.innerHTML = '';
     let url = new URL(urlEl.value);
     html = html.replace('</head>', `<base href="${url.origin}"></head>`);
+    html = html.replace('autofocus="autofocus"', '');
+    html = html.replace('autofocus=""', '');
+    html = html.replace('autofocus', '');
     iframeEl.contentWindow.document.write(html);
     if (!keepOpen) {
       iframeEl.contentWindow.document.close(); // triggers iframe onload
@@ -258,6 +261,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
   iframeEl.onload = () => {
     if (verifyOrigin()) {
       setTimeout(getScreenshot, 300);
+      setTimeout(() => urlEl.focus(), 300);
     }
   };
 });
