@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     }
   });
   
-  alert('About to do first page fetch, please be patient.');
+  // alert('About to do first page fetch, please be patient.');
   fetchPage();
 
   iframeEl.onload = () => {
