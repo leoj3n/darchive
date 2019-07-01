@@ -20,7 +20,7 @@
   --color-dashboard-save-alt: #ffea00;
 
   /* layout vars */
-  --margin-full: 25px;
+  --margin-full: 10px;
   --margin-half: calc(var(--margin-full) / 2);
   
   --border-dashboard-size: 5px;
@@ -30,13 +30,23 @@
   --radius-dashboard-inner: calc(var(--radius-dashboard-outer) - var(--border-dashboard-size));
   
   /* style vars */
-  --font-size-sm: 16px;
-  --font-size-md: 18px;
-  --font-size-lg: 30px;
+  --font-size-sm: 12px;
+  --font-size-md: 14px;
+  --font-size-lg: 26px;
   --font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Ubuntu, Arial, sans-serif;
 
   --gradient-dashboard-button: linear-gradient(to right, var(--color-dashboard-accent), transparent 40% 60%, var(--color-dashboard-accent));
   --gradient-dashboard-save: linear-gradient(to right, var(--color-dashboard-save), transparent 40% 60%, var(--color-dashboard-save));
+}
+
+@media only screen and (min-width: 767px) {
+ :root {
+   --margin-full: 25px;
+
+   --font-size-sm: 16px;
+   --font-size-md: 18px;
+   --font-size-lg: 30px;
+ }
 }
 
 /* HTML */
@@ -131,6 +141,7 @@ body {
 .grid > header > section > nav {
   order: 2;
   flex-grow: 1;
+  overflow-x: auto;
 }
 
 .grid > header > section > aside {
@@ -146,6 +157,9 @@ body {
   width: calc(var(--margin-full) * 2);
   height: calc(var(--margin-full) * 2);
   margin: calc(var(--font-size-md) / 2);
+}
+#btnBlinkingLight {
+  fill: var(--color-dashboard-save);
 }
 
 /* NAVIGATION */
@@ -221,6 +235,12 @@ body {
 }
 .grid > footer > section > aside {
   text-align: right;
+}
+
+@media only screen and (min-width: 346px) {
+  .grid > footer div:last-child {
+    text-align: right;
+  }
 }
 
 /* DASHBOARD */

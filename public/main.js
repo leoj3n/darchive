@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
   const btnThemeChangeEl = document.querySelector('.buzz3');
   
   const logoEl = document.querySelector('.svg-logo');
+  const btnBlinkingLightEl = document.getElementById('btnBlinkingLight');
   const guardEl = document.querySelector('.the-guard');
   const layerOneEl = document.querySelector('.layer1');
   const animateEl = document.getElementById('animate');
@@ -85,9 +86,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
   }
   
   function startLogoAnimation() {
-    btnBlinkingLight.classList.remove('blink');
-    btnBlinkingLight.classList.remove('slow-repeat');
-    btnBlinkingLight.classList.add('color');
+    btnBlinkingLightEl.classList.remove('blink');
+    btnBlinkingLightEl.classList.remove('slow-repeat');
+    btnBlinkingLightEl.classList.add('color');
     guardEl.setAttribute('style', 'filter:url(#shadow)');
     layerOneEl.classList.add('paper');
     animateEl.beginElement();
@@ -96,8 +97,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
   
   function stopLogoAnimation() {
     // btnBlinkingLight.classList.add('blink');
-    btnBlinkingLight.classList.add('slow-repeat');
-    btnBlinkingLight.classList.remove('color');
+    btnBlinkingLightEl.classList.add('slow-repeat');
+    btnBlinkingLightEl.classList.remove('color');
     guardEl.setAttribute('style', '');
     layerOneEl.classList.remove('paper');
     animateEl.beginElement();
