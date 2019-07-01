@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
   });
 
   btnSearch.addEventListener('click', (event) => {
-    alert('Soon, you will be able to search the index of public internet archives created and hosted by other users.');
+    alert('Soon, you will be able to search the index of public internet archives created and hosted by other users like you.');
   });
 
   btnSignIn.addEventListener('click', (event) => {
