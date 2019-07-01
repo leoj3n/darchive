@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
   const appConfig = new blockstack.AppConfig(['store_write', 'publish_data']);
   const userSession = new blockstack.UserSession({ appConfig: appConfig });
+  const btnAbout = document.getElementById('btnAbout');
+  const btnSearch = document.getElementById('btnSearch');
   const btnSignIn = document.getElementById('btnSignIn');
   
   const gridEl = document.querySelector('.grid');
@@ -225,9 +227,21 @@ document.addEventListener('DOMContentLoaded', function(event) {
     }
   });
 
+  btnAbout.addEventListener('click', (event) => {
+    alert('Welcome to the decentralized internet archive.');
+  });
+
+  btnSearch.addEventListener('click', (event) => {
+    alert('Soon, you will be able to search the index of public internet archives created and hosted by other users.');
+  });
+
   btnSignIn.addEventListener('click', (event) => {
-    event.preventDefault();
-    userSession.redirectToSignIn();
+    if (userSession.isUserSignedIn()) {
+      alert('Soon, you will be able to browse your own personal collection of archived internet pages.');
+    } else {
+      event.preventDefault();
+      userSession.redirectToSignIn();
+    }
   });
 
   if (userSession.isUserSignedIn()) {
