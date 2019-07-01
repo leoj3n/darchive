@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', function(event) {
   const imageProxy = 'https://niklasvh-html2canvas-proxy-nodejs.glitch.me';
   const htmlProxy = 'https://rob--w-cors-anywhere-6.glitch.me';
+
+  const appConfig = new blockstack.AppConfig(['store_write', 'publish_data']);
+  const userSession = new blockstack.UserSession({ appConfig: appConfig });
+  const btnSignIn = document.getElementById('btnSignIn');
   
   const gridEl = document.querySelector('.grid');
   const tabEls = document.querySelectorAll('nav ul li a');
@@ -12,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
   const btnFreshSourceEl = document.getElementById('btnFreshSource');
   const btnFreshScreenshotEl = document.getElementById('btnFreshScreenshot');
   const btnFreshLiveViewEl = document.getElementById('btnFreshLiveView');
+  const btnSave = document.getElementById('btnSave');
   const btnThemeChangeEl = document.querySelector('.buzz3');
   
   const logoEl = document.querySelector('.svg-logo');
@@ -147,14 +152,22 @@ document.addEventListener('DOMContentLoaded', function(event) {
     }
   }
 
+  function showProfile(profile) {
+    let person = new blockstack.Person(profile);
+    btnSignIn.innerHTML = person.name() ? person.name() : "Nameless Person";
+    // if(person.avatarUrl()) {
+    //   document.getElementById('avatar-image').setAttribute('src', person.avatarUrl())
+    // }
+  }
+
   tabEls.forEach((el) => {
     el.addEventListener('click', (e) => {
+      e.preventDefault();
       tabEls.forEach((elem) => {
         elem.className = ' ';
       });
       e.target.className = 'active';
       e.target.blur();
-      e.preventDefault();
     });
   });
   
@@ -198,9 +211,33 @@ document.addEventListener('DOMContentLoaded', function(event) {
   });
 
   urlFormEl.addEventListener('submit', (event) => {
-    fetchPage();
     event.preventDefault();
+    fetchPage();
   }, true);
+
+  btnSave.addEventListener('click', (event) => {
+    if (userSession.isUserSignedIn()) {
+      alert('An archive will be saved to your Blockstack storage.');
+      window.location = window.location.origin;
+    } else {
+      alert('You must be logged in to save an archive.');
+      userSession.redirectToSignIn();
+    }
+  });
+
+  btnSignIn.addEventListener('click', (event) => {
+    event.preventDefault();
+    userSession.redirectToSignIn();
+  });
+
+  if (userSession.isUserSignedIn()) {
+    const { profile } = userSession.loadUserData();
+    showProfile(profile);
+  } else if (userSession.isSignInPending()) {
+    userSession.handlePendingSignIn().then(userData => {
+      window.location = window.location.origin;
+    });
+  }
   
   fetchPage();
 
@@ -211,6 +248,6 @@ document.addEventListener('DOMContentLoaded', function(event) {
   };
 });
 
-window.onbeforeunload = function() {
-  return 'confirm leave onbeforeunload';
-};
+// window.onbeforeunload = function() {
+//   return 'Changes you made may not be saved.';
+// };
