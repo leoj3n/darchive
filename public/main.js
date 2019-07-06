@@ -265,7 +265,3 @@ document.addEventListener('DOMContentLoaded', function(event) {
     }
   };
 });
-
-// window.onbeforeunload = function() {
-//   return 'Changes you made may not be saved.';
-// };
